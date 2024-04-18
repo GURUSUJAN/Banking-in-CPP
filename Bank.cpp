@@ -1,8 +1,11 @@
 #include <iostream>
-#include <fstream>
-#include <stdexcept>
-#include <string>
-#include <sstream>
+#include <fstream> //File Handling
+#include <stdexcept> //Run Time key word
+#include <string> //String Manuplating
+#include <sstream> //String stream
+#include <ctime> //time function
+#include <cstdlib> // For srand, rand
+
 
 using std::cin;
 using std::cout;
@@ -21,14 +24,28 @@ using std::ifstream;
 using std::stringstream;
 
 enum class MenuOption { CREATE_ACCOUNT = 1, LOGIN, QUIT };
+enum class TypeofLogin { Tpin = 1, UserName };
 enum class LoginOption { CHECK_BALANCE = 1, DEPOSIT, WITHDRAW, QUIT };
 
-string FirstName, LastName, UserName, PassWord;
+string FirstName, LastName, UserName, PassWord, Generatedtpin;
 long long PhoneNumber;
 float Amount;
 
+const char alphanumeric[] = "1234506789";
 
-inline bool check(string line, string login_username, string login_password, string fname, string lname, string usrname, string password, long long phonenumber, float amount)
+inline string tpinGenerator()
+{
+    srand(time(0));
+    cout << "Generated tpin: ";
+    for( int i=0;i<6;i++)
+    Generatedtpin += alphanumeric[rand() % 9];
+
+    cout << Generatedtpin << endl;
+    return Generatedtpin;
+} 
+
+
+inline bool check(string line, string login_username, string login_password, string fname, string lname, string usrname, string password, long long phonenumber, float amount, string login_tpin)
 {
     stringstream ss(line);
 
@@ -39,6 +56,7 @@ inline bool check(string line, string login_username, string login_password, str
     string phone_str, balance_str;
     getline(ss, phone_str, '|');
     getline(ss, balance_str);
+    getline(ss, Generatedtpin, '|');
 
     try
     {
@@ -52,7 +70,7 @@ inline bool check(string line, string login_username, string login_password, str
     }
 
     float money;
-    if (login_username == UserName && login_password == PassWord)
+    if ((login_username == UserName && login_password == PassWord) || (login_tpin == Generatedtpin))
     {
         LoginOption login_input;
         do
@@ -76,9 +94,9 @@ inline bool check(string line, string login_username, string login_password, str
                         cin >> DepositAmount;
 
                         if(DepositAmount >= 0)
-                        Amount += DepositAmount;
+                            Amount += DepositAmount;
                         else
-                        throw runtime_error("Amount can't be Negative!");
+                            throw runtime_error("Amount can't be Negative!");
                     }
                     catch(const exception& e)
                     {
@@ -124,7 +142,7 @@ inline void CreateAccount()
 {
     ofstream UserData("User Data.txt", ios::app);
 
-    string fname, lname, uname, pass;
+    string fname, lname, uname, pass, tpin;
     long long phonenumber;
     float amount;
 
@@ -151,6 +169,10 @@ inline void CreateAccount()
 
             cout << "Enter Opening Balance: ";
             cin >> amount;
+
+            tpin = tpinGenerator();
+            cout << "You can use it at the time of Login" << endl;
+            cout << "Thank you for taking account in our Bank " << fname << " " << lname << endl;
         }
         else
         {
@@ -162,7 +184,7 @@ inline void CreateAccount()
         cout << e.what() << endl;
     }
 
-    UserData << fname << "|" << lname << "|" << uname << "|" << pass << "|" << phonenumber << "|" << amount << endl;
+    UserData << fname << "|" << lname << "|" << uname << "|" << pass << "|" << phonenumber << "|" << amount << "|" << tpin << endl;
     UserData.close();
 }
 
@@ -174,49 +196,67 @@ inline void Login()
 
     try
     {
-            if (UserData)
-            {
-                string line = "";
-                string login_username, login_password;
+        if (UserData)
+        {
+            string line = "";
+            string login_username, login_password, login_tpin;
 
+            TypeofLogin UserInput;
+
+            cout << "1. Tpin Login\n2. Username Login" << endl;
+            int Input;
+            cin >> Input;
+
+            UserInput = static_cast<TypeofLogin>(Input);
+
+            switch (UserInput)
+            {
+            case TypeofLogin::Tpin:
+                cout << "Enter Tpin: ";
+                cin.ignore();
+                getline(cin, login_tpin);
+                break;
+            case TypeofLogin::UserName:
                 cout << "Enter Username: ";
                 cin.ignore();
                 getline(cin, login_username);
 
                 cout << "Enter Password: ";
                 getline(cin, login_password);
-
-                string fname, lname, usrname, password;
-                long long phonenumber;
-                float amount;
-
-                bool user_found = false;
-
-                while (getline(UserData, line))
-                {
-                    if (check(line, login_username, login_password, fname, lname, usrname, password, phonenumber, amount))
-                    {
-                        user_found = true;
-                        temp_data << FirstName << "|" << LastName << "|" << UserName << "|" <<
-                            PassWord << "|" << PhoneNumber << "|" << Amount << endl;
-                    }
-                    else
-                    {
-                        temp_data << line << endl;
-                    }
-                }
-
-                if (!user_found)
-                {
-                    cout << "User not found or invalid credentials!" << endl;
-                }
-
-                UserData.close();
-                temp_data.close();
-
-                remove("User Data.txt");
-                rename("Temp Data.txt", "User Data.txt");
+                break;
             }
+
+            string fname, lname, usrname, password, tpin;
+            long long phonenumber;
+            float amount;
+
+            bool user_found = false;
+
+            while (getline(UserData, line))
+            {
+                if (check(line, login_username, login_password, fname, lname, usrname, password, phonenumber, amount, login_tpin))
+                {
+                    user_found = true;
+                    temp_data << FirstName << "|" << LastName << "|" << UserName << "|" <<
+                        PassWord << "|" << PhoneNumber << "|" << Amount << "|" << Generatedtpin << endl;
+                }
+                else
+                {
+                    temp_data << line << endl;
+                }
+            }
+
+            if (!user_found)
+            {
+                cout << "User not found or invalid credentials!" << endl;
+            }
+
+            UserData.close();
+            temp_data.close();
+
+            remove("User Data.txt");
+            rename("Temp Data.txt", "User Data.txt");
+        }
         else
         {
             throw runtime_error("Error opening file 'User Data.txt' for reading. Please create an account.");
@@ -257,4 +297,14 @@ int main()
         }
     }while(UserInput != MenuOption::QUIT);
 }
+
+/*
+    <<Updates>>
+    1.Added TPIN for the account.
+    2.Good in Exception Handling.
+
+    <<Bugs>>
+    1.Multiple Commands are getting in to it
+    2.Not getting Updated in File. 
+*/
 
