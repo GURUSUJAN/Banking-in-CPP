@@ -28,16 +28,16 @@
       A TPIN is generated automatically.
       User data is stored in "User Data.txt".
       
-## **`Login (Login class)`** ##
+## **`Login`** ##
       Users can log in using their TPIN or username/password combination.
       User data is checked against "User Data.txt".
       If login is successful, the user's information is displayed, and they are prompted with options.
       
-## **`Transactions (Transaction class)`** ##
+## **`Transactions`** ##
       Users can check balance, deposit, withdraw, or quit.
       Error handling ensures data integrity and prevents invalid transactions.
       
-## **`Data Management (Checker and Checking classes)`** ##
+## **`Data Management`** ##
       Account data is read from "User Data.txt" and compared during login.
       If a user makes changes to their account, the data file is updated.
       
