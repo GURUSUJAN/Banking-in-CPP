@@ -1,6 +1,6 @@
 
 
-# This C++ program simulates a basic banking system with the following functionalities #
+# This C++ program simulates a banking system with the following functionalities #
 
 ## **`Account Creation🪪`** ##
       Users can create an account by providing their first name, last name, username, password, phone number, and opening balance.
