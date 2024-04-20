@@ -47,8 +47,10 @@
       Efficient data management with file handling.
       Encapsulation to ensure data security and integrity
 
-
+## **`Updates`** ##
 * [x]  Use of Oops Concepts
 * [x]  More Compact
 * [x]  Good Error Handling
-* [ ]  Solid Properties 
+
+## **`Next Updates`** ##
+* [x]  Solid Properties 
