@@ -1,1 +1,54 @@
-The provided C++ program offers a comprehensive implementation of a basic banking system, showcasing fundamental concepts of programming such as file I/O, exception handling, and enum usage. The idea likely stemmed from a pedagogical need to illustrate practical application of these concepts within a familiar context. The program's structure revolves around providing users with a menu-driven interface to create accounts, log in, and perform banking operations including balance inquiries, deposits, and withdrawals. This structure facilitates user interaction and allows for seamless navigation through the system's functionalities.Central to the program's functionality are the `MenuOption` and `LoginOption` enums, which delineate the available choices for users at various stages of interaction. These enums serve as an intuitive way to represent menu options and account operations, enhancing code readability and maintainability. Additionally, the program utilizes global variables to store user data, such as first name, last name, username, password, phone number, and account balance. These variables are manipulated within functions like `CreateAccount` and `Login`, enabling the program to manage user accounts and transactions effectively.File I/O operations play a pivotal role in the program's functionality, allowing user account information to be stored and retrieved from a text file named "User Data.txt". This enables persistent storage of user data across program executions, ensuring continuity and convenience for users. Moreover, the program employs exception handling mechanisms to gracefully manage runtime errors, such as file opening failures or invalid user input. This enhances the program's robustness and reliability, providing users with a seamless banking experience.In summary, the C++ program encapsulates a simplified yet functional banking system, demonstrating key programming concepts such as enum usage, file I/O, and exception handling. Through its structured approach to user interaction and data management, the program offers a practical illustration of programming principles within a real-world scenario, making it suitable for educational purposes or as a starting point for more complex software development projects.`GSR`.
+
+
+# This C++ program simulates a basic banking system with the following functionalities #
+
+## **`Account Creation🪪`** ##
+      Users can create an account by providing their first name, last name, username, password, phone number, and opening balance.
+      A 6-digit TPIN (Transaction Personal Identification Number) is automatically generated for the user.
+      Account information is stored in a text file named "User Data.txt".
+      
+## **`Login🔐`** ##
+      Users can log in using either their TPIN or username/password combination.
+      If the login credentials are correct, the user's information is displayed,
+      and they are given options to check balance, deposit, withdraw, or quit.
+      
+## **`Transactions📨`** ##
+      Users can check their account balance, deposit funds, withdraw funds, or quit.
+      Error messages are displayed for scenarios such as invalid input, file handling errors,
+      negative amounts during transactions, and insufficient funds during withdrawals.
+      
+## **`Data Management🗄️`** ##
+      Account data is stored in a text file in the format: first name|last name|username|password|phone number|balance|TPIN.
+      When a user logs in, their information is checked against the data file.
+      If a user makes changes to their account (e.g., deposit or withdrawal), the data file is updated.
+      
+## **`How it works🤔`** ##
+      Account Creation (CreateAccount class):
+      Users input their details: first name, last name, username, password, phone number, and opening balance.
+      A TPIN is generated automatically.
+      User data is stored in "User Data.txt".
+      
+## **`Login (Login class)`** ##
+      Users can log in using their TPIN or username/password combination.
+      User data is checked against "User Data.txt".
+      If login is successful, the user's information is displayed, and they are prompted with options.
+      
+## **`Transactions (Transaction class)`** ##
+      Users can check balance, deposit, withdraw, or quit.
+      Error handling ensures data integrity and prevents invalid transactions.
+      
+## **`Data Management (Checker and Checking classes)`** ##
+      Account data is read from "User Data.txt" and compared during login.
+      If a user makes changes to their account, the data file is updated.
+      
+## **`Key Features🛡️`** ##
+      Clear and concise user interface.
+      Robust error handling for user input and file operations.
+      Efficient data management with file handling.
+      Encapsulation to ensure data security and integrity
+
+
+* [x]  Use of Oops Concepts
+* [x]  More Compact
+* [x]  Good Error Handling
+* [ ]  Solid Properties 
