@@ -150,6 +150,13 @@ public:
     void checkBalance() const {
         cout << "Balance is: " << amount << endl;
     }
+private:
+    float& amount;
+};
+
+class Deposit {
+public:
+    Deposit(float& amount) : amount(amount) {}
 
     void deposit() {
         try {
@@ -158,13 +165,21 @@ public:
             cin >> depositAmount;
 
             if (depositAmount >= 0)
-                Amount += depositAmount;
+                amount += depositAmount;
             else
-                throw runtime_error(NegativeAmount);
+                throw runtime_error("Negative amount");
         } catch (const exception& e) {
             cout << e.what() << endl;
         }
     }
+
+private:
+    float& amount;
+};
+
+class Withdraw {
+public:
+    Withdraw(float& amount) : amount(amount) {}
 
     void withdraw() {
         try {
@@ -173,9 +188,9 @@ public:
             cin >> withdrawAmount;
 
             if (withdrawAmount < 0 || withdrawAmount > amount) {
-                throw runtime_error(FundsInsufficient);
+                throw runtime_error("Funds insufficient");
             } else {
-                Amount -= withdrawAmount;
+                amount -= withdrawAmount;
             }
         } catch (const exception& e) {
             cout << e.what() << endl;
@@ -218,6 +233,8 @@ public:
             cout << "User found: " << FirstName << " " << LastName << endl;
 
             Transaction transaction(Amount);
+            Deposit deposit(Amount);
+            Withdraw withdraw(Amount);
             LoginOption login_input;
             do {
                 cout << "1. Check Balance\n2. Deposit\n3. Withdraw\n4. Quit" << endl;
@@ -230,10 +247,10 @@ public:
                         transaction.checkBalance();
                         break;
                     case LoginOption::DEPOSIT:
-                        transaction.deposit();
+                        deposit.deposit();
                         break;
                     case LoginOption::WITHDRAW:
-                        transaction.withdraw();
+                        withdraw.withdraw();
                         break;
                     case LoginOption::QUIT:
                         cout << "See you again " << FirstName << endl;
